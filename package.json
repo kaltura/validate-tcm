@@ -1,0 +1,14 @@
+{
+  "name": "validate-tcm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "couchbase": "^2.6.1",
+    "glob": "^7.1.4",
+    "resolve-env": "^1.0.0"
+  }
+}
