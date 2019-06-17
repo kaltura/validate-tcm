@@ -1,12 +1,9 @@
 FROM node:11
 
 WORKDIR /opt/kaltura/tcm-configure
-ADD *.js ./
-ADD *.json ./
+ADD . ./
 
 RUN npm install
-
-ENV COUCHBASE_URL couchbase1
 
 CMD npm start
 
