@@ -8,6 +8,7 @@ pipeline {
     }
     environment {
         version = sh(script: 'cat package.json | grep version | head -1 | awk -F: \'{ print $2 }\' | sed \'s/[",]//g\' | sed \'s/^ *//;s/ *$//\'', returnStdout: true).trim()
+        DEPLOY_AS_LATEST = "true"
     }
 
     stages { 
@@ -16,7 +17,6 @@ pipeline {
                 script {
                     docker.build('validate-tcm:$BUILD_NUMBER', '--build-arg VERSION=$version .')
                 }
-                env.DEPLOY_AS_LATEST = "true"
                 deploy('validate-tcm', "$version")
             }
         }
