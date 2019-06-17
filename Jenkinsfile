@@ -17,7 +17,7 @@ pipeline {
                 script {
                     docker.build('validate-tcm:$BUILD_NUMBER', '--build-arg VERSION=$version .')
                 }
-                deploy('validate-tcm', "$version")
+                deploy('validate-tcm', "$version", 'dev', false, false)
             }
         }
     }
