@@ -15,7 +15,7 @@ const tcm = {
     appId: process.env.TCM_APP_ID,
     appSecret: process.env.TCM_APP_SECRET
 };
-const tcmUrl = `${tcm.url}/${tcm.app}/main/${tcm.section}?app_id=${tcm.appId}&app_secret=${tcm.secret}`;
+const tcmUrl = `${tcm.url}/${tcm.app}/main/${tcm.section}?app_id=${tcm.appId}&app_secret=${tcm.appSecret}`;
 console.log(`TCM URL [${tcmUrl}]`)
 
 
