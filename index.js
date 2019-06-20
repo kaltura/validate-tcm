@@ -66,14 +66,26 @@ function validateConfig(tcmConfig) {
                     }
                 }
                 if(validateHostname) {
-                    dns.resolve(currentBranch, (err, records) => {
-                        if(err) {
-                            return die(`Property ${path} hostname resolution error ${currentBranch}: ${err}`);
-                        }
-                        if(!records || !records.length) {
-                            return die(`Property ${path} hostname not found ${currentBranch}`);
-                        }
-                    })
+                    if(currentBranch.match(/^[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}$/)) {
+                        dns.reverse(currentBranch, (err, hostnames) => {
+                            if(err) {
+                                return die(`Property ${path} IP resolution error ${currentBranch}: ${err}`);
+                            }
+                            if(!hostnames || !hostnames.length) {
+                                return die(`Property ${path} IP not found ${currentBranch}`);
+                            }
+                        });
+                    }
+                    else {
+                        dns.resolve(currentBranch, (err, records) => {
+                            if(err) {
+                                return die(`Property ${path} hostname resolution error ${currentBranch}: ${err}`);
+                            }
+                            if(!records || !records.length) {
+                                return die(`Property ${path} hostname not found ${currentBranch}`);
+                            }
+                        });
+                    }
                 }
             });
         });
