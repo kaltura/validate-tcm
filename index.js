@@ -2,11 +2,12 @@
 
 const fs = require('fs');
 const glob = require('glob');
+const yaml = require('yaml');
 const http = require('http');
 const https = require('https');
 const resolveEnv = require('resolve-env');
 
-const configPath = process.env.CONFIG_PATH || '/etc/kaltura/tcm/*.json';
+const configPath = process.env.CONFIG_PATH || '/etc/kaltura/tcm/*.yaml';
 
 const tcm = {
     url: process.env.TCM_URL,
@@ -36,15 +37,15 @@ function validateConfig(tcmConfig) {
         }
         files.forEach(file => {
             console.log('Reading configuration: ', file);
-            const json = resolveEnv(fs.readFileSync(file, 'utf-8'));
+            const yml = resolveEnv(fs.readFileSync(file, 'utf-8'));
             var config;
             try {
-                config = JSON.parse(json);
+                config = yaml.parse(yml);
             }
             catch (err) {
                 return die(`Reading configuration [${file}]: ${err.message}`);
             }
-        
+            
             config.forEach(({path, regex}) => {
                 var currentBranch = tcmConfig;
                 var reachedPath = '/';

@@ -1,6 +1,6 @@
 {
   "name": "validate-tcm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "glob": "^7.1.4",
-    "resolve-env": "^1.0.0"
+    "resolve-env": "^1.0.0",
+    "yaml": "^1.6.0"
   }
 }
