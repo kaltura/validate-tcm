@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 
 const fs = require('fs');
+const dns = require('dns');
 const glob = require('glob');
 const yaml = require('yaml');
 const http = require('http');
@@ -46,7 +47,7 @@ function validateConfig(tcmConfig) {
                 return die(`Reading configuration [${file}]: ${err.message}`);
             }
             
-            config.forEach(({path, regex}) => {
+            config.forEach(({path, regex, validateHostname}) => {
                 var currentBranch = tcmConfig;
                 var reachedPath = '/';
                 var pathParts = path.split('/');
@@ -63,6 +64,16 @@ function validateConfig(tcmConfig) {
                     if(!re.test(currentBranch)) {
                         return die(`Property [${path}] does not match format [${regex}]`);
                     }
+                }
+                if(validateHostname) {
+                    dns.resolve(currentBranch, (err, records) => {
+                        if(err) {
+                            return die(`Property [${path}] hostname resolution error [${currentBranch}]: ${err}`);
+                        }
+                        if(!records || !records.length) {
+                            return die(`Property [${path}] hostname not found [${currentBranch}]`);
+                        }
+                    })
                 }
             });
         });
