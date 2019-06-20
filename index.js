@@ -23,7 +23,7 @@ console.log(`TCM URL [${tcmUrl}]`)
 
 function die(err) {
     console.error(err);
-    fs.writeFileSync('/dev/termination-log', `TCM [${tcmUrl}] Validation Failed: ${err}`);
+    fs.writeFileSync('/dev/termination-log', `TCM ${tcmUrl} Validation Failed: ${err}`);
     process.exit(-1);
 }
 
@@ -44,7 +44,7 @@ function validateConfig(tcmConfig) {
                 config = yaml.parse(yml);
             }
             catch (err) {
-                return die(`Reading configuration [${file}]: ${err.message}`);
+                return die(`Reading configuration ${file}: ${err.message}`);
             }
             
             config.forEach(({path, regex, validateHostname}) => {
@@ -54,7 +54,7 @@ function validateConfig(tcmConfig) {
                 while(pathParts.length) {
                     var pathPart = pathParts.shift();
                     if(!currentBranch[pathPart]) {
-                        return die(`Property [${pathPart}] not found under path [${reachedPath}]`);
+                        return die(`Property ${pathPart} not found under path ${reachedPath}`);
                     }
                     reachedPath += `${pathPart}/`;
                     currentBranch = currentBranch[pathPart];
@@ -62,16 +62,16 @@ function validateConfig(tcmConfig) {
                 if(regex) {
                     var re = new RegExp(regex);
                     if(!re.test(currentBranch)) {
-                        return die(`Property [${path}] does not match format [${regex}]`);
+                        return die(`Property ${path} does not match format ${regex}`);
                     }
                 }
                 if(validateHostname) {
                     dns.resolve(currentBranch, (err, records) => {
                         if(err) {
-                            return die(`Property [${path}] hostname resolution error [${currentBranch}]: ${err}`);
+                            return die(`Property ${path} hostname resolution error ${currentBranch}: ${err}`);
                         }
                         if(!records || !records.length) {
-                            return die(`Property [${path}] hostname not found [${currentBranch}]`);
+                            return die(`Property ${path} hostname not found ${currentBranch}`);
                         }
                     })
                 }
