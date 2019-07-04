@@ -15,7 +15,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build('validate-tcm:$BUILD_NUMBER', '--build-arg VERSION=$version .')
+                    env.DOCKER_BUILD_TAG = UUID.randomUUID().toString()
+                    docker.build('validate-tcm:$DOCKER_BUILD_TAG', '--build-arg VERSION=$version .')
                 }                
             }
         }
